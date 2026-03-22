@@ -12,7 +12,7 @@ A CLI-based railway network management system built in **C**, implementing **7 d
 | Member 2 | Station Directory | Singly Linked List | Insertion Sort |
 | Member 3 | Journey Log | Doubly Linked List | Selection Sort |
 | Member 4 | Train Route Rotation | Circular Linked List | — |
-| Member 5 | Ticket Cancellation Log | Stack | — |
+| Member 5 | Seat Reservation Management | Array (2nd use) | Bubble Sort |
 | Member 6 | Passenger Boarding Queue | Queue | — |
 | Member 7 | Train Maintenance Queue | Queue (2nd use) | — |
 
@@ -20,7 +20,7 @@ A CLI-based railway network management system built in **C**, implementing **7 d
 
 ## 📋 System Overview
 
-This system models the full operational flow of a national railway network — from train registration and station management to journey logging, passenger boarding, ticket cancellations and train maintenance. Every module solves a real railway operations problem and maps to a specific data structure for a justified reason.
+This system models the full operational flow of a national railway network — from train fleet management and station directory to journey logging, seat reservations, passenger boarding and depot maintenance. Every module solves a real railway operations problem and maps to a specific data structure for a justified reason.
 
 ```
 Train Added to Fleet
@@ -39,8 +39,8 @@ Train Added to Fleet
         ├──► [Doubly LL]    Journey logged with distance & departure time
         │         (navigate backward = older trips, forward = latest)
         │
-        ├──► [Stack]        Ticket cancelled → pushed to log
-        │         (reinstate ticket = pop from stack)
+        ├──► [Array]        Seat reserved or released on a specific train
+        │         (direct O(1) access by seat number)
         │
         └──► [Queue]        Train submitted for depot maintenance
                     (processed in submission order — FIFO)
@@ -61,7 +61,7 @@ railway-network-management/
 │   ├── station_directory.h         ← Member 2
 │   ├── journey_log.h               ← Member 3
 │   ├── route_rotation.h            ← Member 4
-│   ├── cancellation_log.h          ← Member 5
+│   ├── seat_reservations.h         ← Member 5
 │   ├── boarding_queue.h            ← Member 6
 │   └── maintenance_queue.h         ← Member 7
 │
@@ -70,7 +70,7 @@ railway-network-management/
 │   ├── station_directory.c         ← Member 2
 │   ├── journey_log.c               ← Member 3
 │   ├── route_rotation.c            ← Member 4
-│   ├── cancellation_log.c          ← Member 5
+│   ├── seat_reservations.c         ← Member 5
 │   ├── boarding_queue.c            ← Member 6
 │   └── maintenance_queue.c         ← Member 7
 │
@@ -177,9 +177,9 @@ Cycles trains through route deployments endlessly. After the last train's trip t
 ### 5. 🎫 Ticket Cancellation Log — `Stack`
 Records every ticket cancellation in LIFO order. If a cancellation was made by mistake, pop it to reinstate the ticket. The top of the stack is always the most recent cancellation.
 
-**Base Operations:** `pushCancellation` `popCancellation` `peekLastCancellation` `searchCancellation` `displayCancellationLog` `clearLog` `isStackEmpty` `isStackFull`
+**Base Operations:** `loadTrainSeats` `reserveSeat` `releaseSeat` `updateReservation` `searchSeat` `displaySeatMap` `isSeatMapEmpty`
 
-**Extra:** `getTotalRefundAmount` — SUM of all ticketPrice values across every record in the stack
+**Extra:** `countAvailableSeats` — CONDITIONAL COUNT scanning array for Available seats, reports occupancy % and class breakdown
 
 ---
 
@@ -207,7 +207,7 @@ All modules are linked through two universal keys:
 
 ```c
 trainID    →  assigned in Train Fleet Registry (Module 1)
-              used in Journey Log, Route Rotation, Maintenance Queue
+              used in Journey Log, Route Rotation, Maintenance Queue, Seat Reservations
 
 stationID  →  assigned in Station Directory (Module 2)
               used in Journey Log, Boarding Queue
@@ -223,7 +223,7 @@ stationID  →  assigned in Station Directory (Module 2)
 | 2 | `countStationsOnRoute()` | Filtered COUNT | Stations matching a given routeID |
 | 3 | `calculateJourneyDistance()` | Aggregate SUM | Total km travelled by a specific train |
 | 4 | `getRouteSize()` | Structural COUNT | Nodes in circular cycle via manual traversal |
-| 5 | `getTotalRefundAmount()` | Aggregate SUM | Total refund value of all stack entries |
+| 5 | `countAvailableSeats()` | Conditional COUNT | Available seats on loaded train, by class |
 | 6 | `getAverageWaitTime()` | Aggregate AVERAGE | Queue depth metric and class distribution |
 | 7 | `countByMaintenanceType()` | Conditional COUNT | Entries per maintenance type in queue |
 
@@ -234,12 +234,12 @@ stationID  →  assigned in Station Directory (Module 2)
 ## 📌 DS Rule Verification
 
 ```
-Array           → used 1 time  ✅  (max allowed: 3)
+Array           → used 2 times ✅  (max allowed: 3)
 Singly LL       → used 1 time  ✅  (max allowed: 3)
 Doubly LL       → used 1 time  ✅  (max allowed: 3)
 Circular LL     → used 1 time  ✅  (max allowed: 3)
-Stack           → used 1 time  ✅  (max allowed: 3)
 Queue           → used 2 times ✅  (max allowed: 3)
+Stack           → not used      (no genuinely honest use case in this domain)
 ```
 
 ---
@@ -258,5 +258,5 @@ Queue           → used 2 times ✅  (max allowed: 3)
 - **Course:** Data Structures & Algorithms
 - **Institution:** University of Moratuwa
 - **Requirement:** 7 data structures, base operations per module, sorting algorithms, at least 1 genuine extra function per member
-- **Data Structures Used:** Array, Singly LL, Doubly LL, Circular LL, Stack, Queue (×2)
+- **Data Structures Used:** Array (×2), Singly LL, Doubly LL, Circular LL, Queue (×2)
 - **Sorting Algorithms:** Bubble Sort, Insertion Sort, Selection Sort

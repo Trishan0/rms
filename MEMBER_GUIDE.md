@@ -12,7 +12,7 @@
 trainID    → created in Module 1 (Train Fleet)
              used in Module 3 (Journey Log)
              used in Module 4 (Route Rotation)
-             used in Module 5 (Cancellation Log)
+             used in Module 5 (Seat Reservations)
              used in Module 7 (Maintenance Queue)
 
 stationID  → created in Module 2 (Station Directory)
@@ -269,65 +269,90 @@ A regular linked list would stop. An array would need boundary checks. Only a ci
 
 ---
 
-# 👤 Member 5 — Ticket Cancellation Log
-**File:** `src/cancellation_log.c` | **Header:** `include/cancellation_log.h`
-**Data Structure:** `Stack`
-**Sort:** None
+---
+
+# 👤 Member 5 — Seat Reservation Management
+**File:** `src/seat_reservations.c` | **Header:** `include/seat_reservations.h`
+**Data Structure:** `Array (2nd use)`
+**Sort:** `Bubble Sort — by seat number`
 
 ---
 
 ## 📖 The Story
 
-A passenger books a ticket from Colombo to Kandy. Their plans change — they cancel it. The cancellation is recorded and a refund is issued. An hour later, they realize they still need to travel and call back to reinstate the ticket. The clerk needs to **undo the last cancellation**.
+A passenger walks up to the ticket counter at Colombo Fort and asks for Seat 24 on the Udarata Menike to Badulla. The booking clerk needs to check instantly — is that seat taken? Who is sitting next to it? How many First Class seats are still open?
 
-This undo-and-reinstate behaviour is pure **Stack** logic. Every cancellation gets pushed on top. The most recent cancellation is always at the top — the first one to be reviewed or reversed. Popping the stack reinstates the ticket. Last-In First-Out — the most recently cancelled ticket is always the easiest to restore.
+Every train has a **fixed, unchanging number of seats**. The Udarata Menike always has exactly 460 seats. Not 459 today and 461 tomorrow — always 460. This hard physical constraint is what makes an **Array** the perfect data structure.
 
-## 🏗️ Why Stack?
+Each seat gets a slot in the array at index `seatNumber - 1`. Checking seat 24 means going directly to `seatMap[23]` — no searching, no traversal, just direct access in O(1). This is exactly how a booking system needs to work when passengers are waiting at the counter.
+
+## 🏗️ Why Array? (And Why Array Twice?)
 
 | Reason | Explanation |
 |--------|-------------|
-| LIFO behaviour | Most recent cancellation is always reviewed and reversed first |
-| Undo support | Popping reinstates the last cancelled ticket naturally |
-| Audit trail | Complete history of every cancellation in push order |
-| Array-based | Fixed upper limit on cancellation records per session — array is appropriate |
+| Fixed seat count | A train's seats never change — array models this physical limit |
+| Direct access | `seatMap[seatNum - 1]` is O(1) — no traversal to find a seat |
+| In-place sort | Bubble Sort reorders the seat map with no extra memory |
+| Different from Module 1 | Module 1 stores trains, Module 5 stores seats — different entity, different size, different purpose |
+
+**Examiner question: "Why Array twice?"**
+```
+Module 1 [Array]: Fixed number of TRAINS owned by railway
+                  One array for the whole system
+                  Indexed by trainID
+                  Sorted by capacity
+
+Module 5 [Array]: Fixed number of SEATS on one train
+                  One array per train loaded
+                  Indexed directly by seat number
+                  Sorted by seat number
+
+Different entity. Different array size. Different purpose.
+Both are genuinely bounded — Array is correct both times.
+```
 
 ## ⚙️ Function Reference
 
 | Function | Type | What It Does |
 |----------|------|-------------|
-| `pushCancellation()` | Base | Checks isStackFull, then increments top and stores the new Cancellation struct at records[top]. Prompts for all ticket details including price which is used by the extra function. |
-| `popCancellation()` | Base | Checks isStackEmpty, reads records[top], decrements top, prints full details of the reinstated ticket. The data remains in the array but top has moved down so it is logically gone. |
-| `peekLastCancellation()` | Base | Reads records[top] without changing top. Shows the most recent cancellation — used to preview before deciding whether to undo. |
-| `searchCancellation()` | Base | Scans entire stack array from top to 0 looking for a matching ticketID. Prints all matches found. |
-| `displayCancellationLog()` | Base | Iterates from top down to 0 printing each record with a position number. Marks index top with "TOP" label. |
-| `clearLog()` | Base | Asks for confirmation then sets top to -1. Stack is logically empty — all records unreachable. |
-| `isStackEmpty()` | Base | Returns 1 if top equals -1. |
-| `isStackFull()` | Base | Returns 1 if top equals MAX_CANCELLATIONS minus 1. |
-| `getTotalRefundAmount()` | **EXTRA** | Traverses the entire stack array from index 0 to top summing every ticketPrice value. Also computes average, highest and lowest single refund. Answers: *"What is the total value of all cancelled tickets currently pending refund?"* |
-| `displayFormattedLog()` | Display | Formatted box table showing cancellation number, ID, passenger, train, route and price. Marks top entry clearly. |
+| `loadTrainSeats()` | Base | Initialises a fresh seat map array for a specific train. Takes trainID, name, total seats and first/second class counts. Assigns seatClass to every element based on seat number ranges. Sets all seats to Available. |
+| `reserveSeat()` | Base | Takes a seat number, accesses `seatMap[seatNum-1]` directly in O(1). Checks if already reserved. Fills in passenger name, NIC, journey date and reserved time. Sets status to Reserved. |
+| `releaseSeat()` | Base | Direct array access by seat number. Checks if the seat is actually reserved first. Clears all passenger fields and sets status back to Available. |
+| `updateReservation()` | Base | Direct array access by seat number. Checks seat is Reserved. Updates one of three fields — passenger name, NIC, or journey date. |
+| `searchSeat()` | Base | By seat number: direct O(1) access, prints full details. By passenger name: linear scan using strstr across all array elements. |
+| `displaySeatMap()` | Base | Linear traversal from index 0 to totalSeats-1 printing every seat's number, class, status and passenger. |
+| `isSeatMapEmpty()` | Base | Returns 1 if currentTrainID is -1, meaning no train has been loaded yet. |
+| `bubbleSortBySeatNumber()` | Sort | Adjacent comparison and swap until seat array is ordered 1 to N. Includes early-exit if no swaps in a pass. Useful after any manual reordering. |
+| `countAvailableSeats()` | **EXTRA** | Scans every element in the array counting those where status equals Available. Reports total available, reserved, occupancy percentage and breakdown by First, Second and Third class. |
+| `displaySeatTable()` | Display | Formatted table showing seat number, class, status, passenger name and journey date for every seat in the array. Shows total availability count at the bottom. |
 
 ## 🧪 Test Scenario
 
 ```
-1. Push 3 cancellations:
-   - Ticket 1001, Rs. 450.00, Colombo → Kandy
-   - Ticket 1002, Rs. 280.00, Colombo → Galle
-   - Ticket 1003, Rs. 650.00, Colombo → Jaffna
+1. Load seat map for T101 Udarata Menike
+   Total seats: 10
+   First class: 2, Second class: 4, Third: 4
 
-2. Call peekLastCancellation()
-   Expected: Ticket 1003 Rs. 650.00 (most recent, not removed)
+2. Reserve seat 1 for Kamal Perera, 2025-04-15
+   Reserve seat 3 for Nimal Silva,  2025-04-15
+   Reserve seat 7 for Amali Dias,   2025-04-15
 
-3. Call getTotalRefundAmount()
-   Expected: Total = Rs. 1380.00, Average = Rs. 460.00
+3. Run countAvailableSeats()
+   Expected: Available=7, Reserved=3, Occupancy=30%
+   First=1 available, Second=4, Third=2
 
-4. Call popCancellation()
-   Expected: Ticket 1003 reinstated, stack depth now 2
+4. Run searchSeat() by name "Silva"
+   Expected: Seat 3 Nimal Silva found
 
-5. Call getTotalRefundAmount() again
-   Expected: Total = Rs. 730.00 (only 1001 and 1002 remain)
+5. Release seat 3
+   Expected: Seat 3 back to Available
+
+6. Run countAvailableSeats() again
+   Expected: Available=8, Reserved=2, Occupancy=20%
+
+7. Run bubbleSortBySeatNumber()
+   Expected: Seats ordered 1 -> 10
 ```
-
----
 
 ---
 
@@ -468,7 +493,7 @@ The boarding queue processes **passengers at platforms**. This queue processes *
 | 2 | Singly LL | 5 | Insertion Sort | `countStationsOnRoute` | `displayStationTable` | **8** |
 | 3 | Doubly LL | 7 (incl. traverseF/B) | Selection Sort | `calculateJourneyDistance` | `displayJourneyTable` | **10** |
 | 4 | Circular LL | 5 | `nextTrain` `getCurrent` | `getRouteSize` | `displayRotationTable` | **9** |
-| 5 | Stack | 8 (incl. isEmpty/isFull/clear) | — | `getTotalRefundAmount` | `displayFormattedLog` | **10** |
+| 5 | Array (x2) | 7 (incl. isSeatMapEmpty) | Bubble Sort | `countAvailableSeats` | `displaySeatTable` | **10** |
 | 6 | Queue | 8 (incl. isEmpty/isFull/cancel) | — | `getAverageWaitTime` | `displayBoardingTable` | **10** |
 | 7 | Queue | 8 (incl. isEmpty/isFull/cancel) | — | `countByMaintenanceType` | `displayMaintenanceTable` | **10** |
 
@@ -488,6 +513,12 @@ Q: What is the time complexity of your sort?
 
 Q: What happens when your module is empty and a function is called?
    → Every function checks isEmpty/isFull first and prints a guard message.
+
+Q: Why did you use Array twice?
+   → Module 1 stores TRAINS owned by the railway — fixed fleet limit
+   → Module 5 stores SEATS on one train — fixed physical seat count
+   → Different entity, different array size, different purpose.
+   → Both are genuinely bounded collections — Array is correct both times.
 
 Q: Why did you use Queue twice?
    → Module 6 processes PASSENGERS at PLATFORMS — output: passenger boards
