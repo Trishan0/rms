@@ -12,9 +12,11 @@ SRCS = main.c \
        $(SRCDIR)/station_directory.c \
        $(SRCDIR)/journey_log.c \
        $(SRCDIR)/route_rotation.c \
-       $(SRCDIR)/cancellation_log.c \
+       $(SRCDIR)/seat_reservations.c \
        $(SRCDIR)/boarding_queue.c \
-       $(SRCDIR)/maintenance_queue.c
+       $(SRCDIR)/maintenance_queue.c \
+	   $(SRCDIR)/shared_types.c 
+
 
 all:
 	$(CC) $(CFLAGS) -I$(INCDIR) $(SRCS) -o $(TARGET)
@@ -28,3 +30,5 @@ run: all
 clean:
 	rm -f $(TARGET) *.o
 	@echo "  [OK] Build cleaned."
+output:
+	mkdir -p output

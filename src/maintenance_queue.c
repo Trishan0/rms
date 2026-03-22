@@ -163,43 +163,37 @@ void cancelMaintenance() {
     maintQ.count--;
     printf("[+] Service S%d cancelled and removed.\n", sid);
 }
-
 /* ================================================================
-   EXTRA FUNCTION - countByMaintenanceType()
-   TYPE: Conditional COUNT - scans queue counting entries
-   matching each maintenance type: Routine / Repair / Emergency
-   Answers: "How many trains need emergency repair right now?"
+   EXTRA FUNCTION — findPositionInQueue()
+   TYPE: Search + positional lookup (FIFO safe)
    ================================================================ */
-void countByMaintenanceType() {
+void findPositionInQueue() {
     ensureInit();
     if (isMaintenanceQueueEmpty()) {
-        printf("[!] Maintenance queue is empty.\n"); return;
+        printf("[!] Queue is empty.\n"); return;
     }
-    int routine   = 0;
-    int repair    = 0;
-    int emergency = 0;
-    int other     = 0;
+
+    int tid;
+    printf("Enter Train ID: T");
+    scanf("%d", &tid);
 
     for (int i = 0; i < maintQ.count; i++) {
-        int idx          = (maintQ.front + i) % MAX_MAINTENANCE;
-        MaintenanceRecord r = maintQ.records[idx];
-        if (strstr(r.maintenanceType, "Routine"))        routine++;
-        else if (strstr(r.maintenanceType, "Repair"))    repair++;
-        else if (strstr(r.maintenanceType, "Emergency")) emergency++;
-        else                                             other++;
-    }
-    printf("\n========== MAINTENANCE TYPE BREAKDOWN ==========\n");
-    printf("  Total in Queue  : %d trains\n", maintQ.count);
-    printf("  Routine Service : %d trains\n", routine);
-    printf("  Repair          : %d trains\n", repair);
-    printf("  Emergency       : %d trains\n", emergency);
-    if (other > 0)
-        printf("  Other           : %d trains\n", other);
-    printf("================================================\n");
-    if (emergency > 0)
-        printf("  [!] %d train(s) require EMERGENCY attention!\n", emergency);
-}
+        int idx = (maintQ.front + i) % MAX_MAINTENANCE;
 
+        if (maintQ.records[idx].trainID == tid) {
+            printf("\n[POSITION FOUND]\n");
+            printf("Train T%d is at position %d out of %d.\n", tid, i + 1, maintQ.count);
+            printf("%d train(s) ahead in queue.\n", i);
+
+            if (i == 0)
+                printf("[+] This train is NEXT for maintenance.\n");
+
+            return;
+        }
+    }
+
+    printf("[!] Train T%d not found in queue.\n", tid);
+}
 /* ================================================================
    FORMATTED DISPLAY
    ================================================================ */
@@ -273,7 +267,7 @@ void maintenanceQueueMenu() {
         printf("  4.  Search by Train ID\n");
         printf("  5.  Display Maintenance Queue\n");
         printf("  6.  Cancel Maintenance\n");
-        printf("  7.  Count by Maintenance Type  [EXTRA]\n");
+        printf("  7.  Find Position in Queue  [EXTRA]\n");
         printf("  8.  Display Maintenance Table\n");
         printf("  0.  Back to Main Menu\n");
         printf("%s", HEADER);
@@ -286,7 +280,7 @@ void maintenanceQueueMenu() {
             case 4: searchMaintenance();       break;
             case 5: displayMaintenanceQueue(); break;
             case 6: cancelMaintenance();       break;
-            case 7: countByMaintenanceType();  break;
+            case 7: findPositionInQueue();     break;
             case 8: displayMaintenanceTable(); break;
             case 0: break;
             default: printf("[!] Invalid choice.\n");

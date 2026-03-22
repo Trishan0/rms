@@ -22,13 +22,11 @@
      Same DS principle — different domain, different data.
 
    EXTRA FUNCTION:
-     countByMaintenanceType()
-     → CONDITIONAL COUNT — scans queue counting how many
-       entries are each type: Routine / Repair / Emergency
-     → Answers: "How many trains need emergency repair
-       right now vs routine service?"
-     → Different from Member 6's average — this is a
-       conditional aggregate, not a numeric average
+  findPositionInQueue()
+  → SEARCH + POSITIONAL LOOKUP — scans queue to find
+    the position of a train using Train ID
+  → Answers: "Where is my train in the queue?"
+  → Maintains FIFO integrity (no reordering)
    ================================================================ */
 
 #include "shared_types.h"
@@ -67,7 +65,7 @@ int  isMaintenanceQueueEmpty();  /* check if queue is empty          */
 int  isMaintenanceQueueFull();   /* check if queue is full           */
 
 /* ---------- Extra function ---------- */
-void countByMaintenanceType();   /* CONDITIONAL COUNT by type        */
+void findPositionInQueue();      /* Find position of a train in queue */      
 
 /* ---------- Formatted display ---------- */
 void displayMaintenanceTable();  /* formatted box table              */
