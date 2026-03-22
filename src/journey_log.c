@@ -1,5 +1,5 @@
 /* ================================================================
-   journey_log.c — Member 3 | Data Structure: DOUBLY LINKED LIST
+   journey_log.c - Member 3 | Data Structure: DOUBLY LINKED LIST
    Module: Journey Log
    ================================================================ */
 
@@ -107,7 +107,7 @@ void searchJourneyRecord() {
             if (curr->journeyID == id) {
                 printf(DIVIDER);
                 printf("  Journey ID  : J%d\n",   curr->journeyID);
-                printf("  Train       : T%d — %s\n", curr->trainID, curr->trainName);
+                printf("  Train       : T%d - %s\n", curr->trainID, curr->trainName);
                 printf("  From        : %s\n",    curr->fromStation);
                 printf("  To          : %s\n",    curr->toStation);
                 printf("  Departure   : %s\n",    curr->departureTime);
@@ -136,7 +136,7 @@ void searchJourneyRecord() {
     if (!found) printf("[!] No matching journey found.\n");
 }
 
-/* Display all records — forward traversal */
+/* Display all records - forward traversal */
 void displayAllJourneys() {
     if (!journeyHead) { printf("[!] Journey log is empty.\n"); return; }
     printf("\n%-6s %-6s %-18s %-18s %-8s %-8s %-6s\n",
@@ -155,10 +155,10 @@ void displayAllJourneys() {
     printf("Total journeys logged: %d\n", count);
 }
 
-/* Browse forward — oldest to newest */
+/* Browse forward - oldest to newest */
 void traverseForward() {
     if (!journeyHead) { printf("[!] Log is empty.\n"); return; }
-    printf("\n[FORWARD — Oldest Journey -> Latest]\n");
+    printf("\n[FORWARD - Oldest Journey -> Latest]\n");
     printf(DIVIDER);
     JourneyNode* curr = journeyHead;
     int step = 1;
@@ -172,10 +172,10 @@ void traverseForward() {
     printf(DIVIDER);
 }
 
-/* Browse backward — latest to oldest (unique to Doubly LL) */
+/* Browse backward - latest to oldest (unique to Doubly LL) */
 void traverseBackward() {
     if (!journeyTail) { printf("[!] Log is empty.\n"); return; }
-    printf("\n[BACKWARD — Latest Journey -> Oldest]\n");
+    printf("\n[BACKWARD - Latest Journey -> Oldest]\n");
     printf(DIVIDER);
     JourneyNode* curr = journeyTail;
     int step = 1;
@@ -190,7 +190,7 @@ void traverseBackward() {
 }
 
 /* ================================================================
-   SORT — SELECTION SORT by Departure Time (lexicographic)
+   SORT - SELECTION SORT by Departure Time (lexicographic)
    Swaps data between nodes, leaves prev/next pointers intact.
    ================================================================ */
 void selectionSortByDeparture() {
@@ -232,8 +232,8 @@ void selectionSortByDeparture() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — calculateJourneyDistance()
-   TYPE: Aggregate SUM — traverses DLL nodes summing distanceKm
+   EXTRA FUNCTION - calculateJourneyDistance()
+   TYPE: Aggregate SUM - traverses DLL nodes summing distanceKm
    for all journeys belonging to a specific trainID.
    Answers: "What is the total distance covered by this train?"
    ================================================================ */
@@ -260,7 +260,7 @@ void calculateJourneyDistance() {
         printf("[!] No journeys found for Train T%d.\n", tid); return;
     }
     printf("\n========== JOURNEY DISTANCE SUMMARY ==========\n");
-    printf("  Train          : T%d — %s\n", tid, trainName);
+    printf("  Train          : T%d - %s\n", tid, trainName);
     printf("  Total Trips    : %d journeys\n", tripCount);
     printf("  Total Distance : %.2f km\n", totalKm);
     printf("  Avg per Trip   : %.2f km\n", totalKm / tripCount);
@@ -318,7 +318,7 @@ void displayJourneyTable() {
 }
 
 /* ================================================================
-   SUB-MENU — Member 3
+   SUB-MENU - Member 3
    ================================================================ */
 void journeyLogMenu() {
     int choice;

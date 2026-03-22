@@ -1,5 +1,5 @@
 /* ================================================================
-   boarding_queue.c — Member 6 | Data Structure: QUEUE
+   boarding_queue.c - Member 6 | Data Structure: QUEUE
    Module: Passenger Boarding Queue
    ================================================================ */
 
@@ -71,8 +71,8 @@ void dequeuePassenger() {
 
     printf("\n[PASSENGER BOARDING]\n");
     printf(DIVIDER);
-    printf("  P%d — %s is now boarding\n", p.passengerID, p.passengerName);
-    printf("  Train   : T%d — %s\n",       p.trainID, p.trainName);
+    printf("  P%d - %s is now boarding\n", p.passengerID, p.passengerName);
+    printf("  Train   : T%d - %s\n",       p.trainID, p.trainName);
     printf("  Station : %s\n",              p.stationName);
     printf("  Class   : %s\n",              p.ticketClass);
     printf(DIVIDER);
@@ -88,8 +88,8 @@ void peekNextPassenger() {
     Passenger p = boardingQ.passengers[boardingQ.front];
     printf("\n[NEXT TO BOARD]\n");
     printf(DIVIDER);
-    printf("  P%d — %s\n",          p.passengerID, p.passengerName);
-    printf("  Train   : T%d — %s\n", p.trainID, p.trainName);
+    printf("  P%d - %s\n",          p.passengerID, p.passengerName);
+    printf("  Train   : T%d - %s\n", p.trainID, p.trainName);
     printf("  Class   : %s | Ticket: %s\n", p.ticketClass, p.ticketNumber);
     printf("  Joined  : %s\n",       p.joinedQueueAt);
     printf(DIVIDER);
@@ -110,8 +110,8 @@ void searchPassenger() {
         if (p.passengerID == pid) {
             printf(DIVIDER);
             printf("  Queue Position : %d\n", i + 1);
-            printf("  P%d — %s\n",    p.passengerID, p.passengerName);
-            printf("  Train          : T%d — %s\n", p.trainID, p.trainName);
+            printf("  P%d - %s\n",    p.passengerID, p.passengerName);
+            printf("  Train          : T%d - %s\n", p.trainID, p.trainName);
             printf("  Station        : %s\n", p.stationName);
             printf("  Class          : %s\n", p.ticketClass);
             printf("  Joined At      : %s\n", p.joinedQueueAt);
@@ -174,8 +174,8 @@ void cancelBoarding() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — getAverageWaitTime()
-   TYPE: Aggregate AVERAGE — computed queue depth metric
+   EXTRA FUNCTION - getAverageWaitTime()
+   TYPE: Aggregate AVERAGE - computed queue depth metric
    Computes average position / wait information for queue.
    ================================================================ */
 void getAverageWaitTime() {
@@ -262,7 +262,7 @@ void displayBoardingTable() {
 }
 
 /* ================================================================
-   SUB-MENU — Member 6
+   SUB-MENU - Member 6
    ================================================================ */
 void boardingQueueMenu() {
     ensureInit();

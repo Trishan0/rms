@@ -1,5 +1,5 @@
 /* ================================================================
-   maintenance_queue.c — Member 7 | Data Structure: QUEUE (2nd use)
+   maintenance_queue.c - Member 7 | Data Structure: QUEUE (2nd use)
    Module: Train Maintenance Queue
    ================================================================ */
 
@@ -31,7 +31,7 @@ static int serviceIDCounter = 700;
 int isMaintenanceQueueEmpty() { ensureInit(); return maintQ.count == 0; }
 int isMaintenanceQueueFull()  { ensureInit(); return maintQ.count == MAX_MAINTENANCE; }
 
-/* Submit a train for maintenance — enqueue at rear */
+/* Submit a train for maintenance - enqueue at rear */
 void enqueueForMaintenance() {
     ensureInit();
     if (isMaintenanceQueueFull()) {
@@ -56,7 +56,7 @@ void enqueueForMaintenance() {
            r.serviceID, r.trainID, r.trainName, maintQ.count);
 }
 
-/* Process next maintenance — dequeue from front */
+/* Process next maintenance - dequeue from front */
 void processNextMaintenance() {
     ensureInit();
     if (isMaintenanceQueueEmpty()) {
@@ -70,7 +70,7 @@ void processNextMaintenance() {
     printf("\n[MAINTENANCE STARTED]\n");
     printf(DIVIDER);
     printf("  Service ID   : S%d\n",   r.serviceID);
-    printf("  Train        : T%d — %s\n", r.trainID, r.trainName);
+    printf("  Train        : T%d - %s\n", r.trainID, r.trainName);
     printf("  Type         : %s\n",    r.maintenanceType);
     printf("  Depot        : %s\n",    r.assignedDepot);
     printf("  Submitted    : %s\n",    r.submittedAt);
@@ -88,7 +88,7 @@ void peekNextMaintenance() {
     MaintenanceRecord r = maintQ.records[maintQ.front];
     printf("\n[NEXT FOR MAINTENANCE]\n");
     printf(DIVIDER);
-    printf("  S%d | T%d — %s\n",  r.serviceID, r.trainID, r.trainName);
+    printf("  S%d | T%d - %s\n",  r.serviceID, r.trainID, r.trainName);
     printf("  Type   : %s\n",     r.maintenanceType);
     printf("  Depot  : %s\n",     r.assignedDepot);
     printf("  Status : %s\n",     r.status);
@@ -108,7 +108,7 @@ void searchMaintenance() {
         int idx          = (maintQ.front + i) % MAX_MAINTENANCE;
         MaintenanceRecord r = maintQ.records[idx];
         if (r.trainID == tid) {
-            printf("  Pos:%-3d S%-4d | T%d — %-28s | %-12s | %s | %s\n",
+            printf("  Pos:%-3d S%-4d | T%d - %-28s | %-12s | %s | %s\n",
                    i + 1, r.serviceID, r.trainID, r.trainName,
                    r.maintenanceType, r.assignedDepot, r.status);
             found = 1;
@@ -165,8 +165,8 @@ void cancelMaintenance() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — countByMaintenanceType()
-   TYPE: Conditional COUNT — scans queue counting entries
+   EXTRA FUNCTION - countByMaintenanceType()
+   TYPE: Conditional COUNT - scans queue counting entries
    matching each maintenance type: Routine / Repair / Emergency
    Answers: "How many trains need emergency repair right now?"
    ================================================================ */
@@ -258,7 +258,7 @@ void displayMaintenanceTable() {
 }
 
 /* ================================================================
-   SUB-MENU — Member 7
+   SUB-MENU - Member 7
    ================================================================ */
 void maintenanceQueueMenu() {
     ensureInit();

@@ -1,5 +1,5 @@
 /* ================================================================
-   train_fleet.c — Member 1 | Data Structure: ARRAY
+   train_fleet.c - Member 1 | Data Structure: ARRAY
    Module: Train Fleet Registry
    ================================================================ */
 
@@ -147,7 +147,7 @@ void displayFleet() {
 }
 
 /* ================================================================
-   SORT — BUBBLE SORT by Seat Capacity (high → low)
+   SORT - BUBBLE SORT by Seat Capacity (high → low)
    ================================================================ */
 void bubbleSortByCapacity() {
     if (trainCount < 2) { printf("[!] Not enough trains to sort.\n"); return; }
@@ -170,7 +170,7 @@ void bubbleSortByCapacity() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — calculateTotalSeatCapacity()
+   EXTRA FUNCTION - calculateTotalSeatCapacity()
    TYPE: Aggregate SUM across entire array
    Traverses full fleet array summing all seatCapacity values.
    Answers: "What is the total passenger capacity of the fleet?"
@@ -246,7 +246,7 @@ Train* findTrainByID(int id) {
 }
 
 /* ================================================================
-   SUB-MENU — Member 1
+   SUB-MENU - Member 1
    ================================================================ */
 void trainFleetMenu() {
     int choice;

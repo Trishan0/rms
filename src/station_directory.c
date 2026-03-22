@@ -1,5 +1,5 @@
 /* ================================================================
-   station_directory.c — Member 2 | Data Structure: SINGLY LINKED LIST
+   station_directory.c - Member 2 | Data Structure: SINGLY LINKED LIST
    Module: Station Directory
    ================================================================ */
 
@@ -152,7 +152,7 @@ void displayAllStations() {
 }
 
 /* ================================================================
-   SORT — INSERTION SORT by Station Code (alphabetical A→Z)
+   SORT - INSERTION SORT by Station Code (alphabetical A→Z)
    Re-links nodes into correct sorted position.
    ================================================================ */
 void insertionSortByCode() {
@@ -184,8 +184,8 @@ void insertionSortByCode() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — countStationsOnRoute()
-   TYPE: Filtered COUNT — traverses list counting nodes
+   EXTRA FUNCTION - countStationsOnRoute()
+   TYPE: Filtered COUNT - traverses list counting nodes
    matching a specific routeID.
    Answers: "How many stations are on route X?"
    ================================================================ */
@@ -268,7 +268,7 @@ StationNode* findStationByID(int id) {
 }
 
 /* ================================================================
-   SUB-MENU — Member 2
+   SUB-MENU - Member 2
    ================================================================ */
 void stationDirectoryMenu() {
     int choice;

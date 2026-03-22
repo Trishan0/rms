@@ -1,5 +1,5 @@
 /* ================================================================
-   route_rotation.c — Member 4 | Data Structure: CIRCULAR LINKED LIST
+   route_rotation.c - Member 4 | Data Structure: CIRCULAR LINKED LIST
    Module: Train Route Rotation
    ================================================================ */
 
@@ -30,7 +30,7 @@ void addTrainToRoute() {
     printf("Direction (e.g. Northbound): "); scanf(" %[^\n]", newNode->direction);
 
     if (currentTrain == NULL) {
-        /* First node — points to itself */
+        /* First node - points to itself */
         newNode->next = newNode;
         currentTrain  = newNode;
     } else {
@@ -71,7 +71,7 @@ void removeTrainFromRoute() {
 
     RouteNode* toRemove = NULL;
     if (currentTrain->trainID == id) {
-        /* Removing the head — advance currentTrain */
+        /* Removing the head - advance currentTrain */
         toRemove     = currentTrain;
         prev->next   = currentTrain->next;
         currentTrain = currentTrain->next;
@@ -153,7 +153,7 @@ void displayRouteRotation() {
 }
 
 /* ================================================================
-   NAVIGATION — Defining Circular LL operations
+   NAVIGATION - Defining Circular LL operations
    ================================================================ */
 
 /* Advance rotation pointer to next train */
@@ -162,7 +162,7 @@ void nextTrainOnRoute() {
     currentTrain = currentTrain->next;
     currentTrain->tripsCompleted++;
     printf("[+] Rotation advanced.\n");
-    printf("    Now Active: T%d — %s | Route: %s | Time: %s\n",
+    printf("    Now Active: T%d - %s | Route: %s | Time: %s\n",
            currentTrain->trainID, currentTrain->trainName,
            currentTrain->routeName, currentTrain->scheduleTime);
 }
@@ -181,7 +181,7 @@ void getCurrentTrain() {
 }
 
 /* ================================================================
-   EXTRA FUNCTION — getRouteSize()
+   EXTRA FUNCTION - getRouteSize()
    TYPE: Structural COUNT via circular traversal
    Traverses circular cycle counting nodes until loop detected.
    Necessary because circular list has NO NULL end point.
@@ -190,7 +190,7 @@ void getRouteSize() {
     if (!currentTrain) {
         printf("[!] Rotation is empty. Size: 0\n"); return;
     }
-    /* Must traverse manually — no NULL to detect end */
+    /* Must traverse manually - no NULL to detect end */
     int count    = 0;
     RouteNode* curr = currentTrain;
     do {
@@ -200,7 +200,7 @@ void getRouteSize() {
 
     printf("\n========== ROTATION SIZE ==========\n");
     printf("  Trains in cycle : %d\n", count);
-    printf("  Active now      : T%d — %s\n",
+    printf("  Active now      : T%d - %s\n",
            currentTrain->trainID, currentTrain->trainName);
     printf("====================================\n");
 }
@@ -256,7 +256,7 @@ void displayRotationTable() {
 }
 
 /* ================================================================
-   SUB-MENU — Member 4
+   SUB-MENU - Member 4
    ================================================================ */
 void routeRotationMenu() {
     int choice;
