@@ -14,8 +14,7 @@ SRCS = main.c \
        $(SRCDIR)/route_rotation.c \
        $(SRCDIR)/seat_reservations.c \
        $(SRCDIR)/boarding_queue.c \
-       $(SRCDIR)/maintenance_queue.c \
-	   $(SRCDIR)/shared_types.c 
+       $(SRCDIR)/maintenance_queue.c 
 
 
 all:
