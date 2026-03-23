@@ -63,14 +63,23 @@ void addPromo(void) {
 
 void displayNextPromo(void) {
     if (last == NULL) {
-        printf("No promos available.\n");
+        printf("\n  [!] No promos available.\n");
         return;
     }
 
-    if (current == NULL) current = last->next;
-    else current = current->next;
+    if (current == NULL) {
+        current = last->next;
+    } else {
+        current = current->next;
+    }
 
-    printf("Next promo: ID=%d | Title=%s\n", current->id, current->title);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                     NEXT ACTIVE PROMO                       |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Promo ID     | %-44d |\n", current->id);
+    printf("  | Title        | %-44s |\n", current->title);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void displayAllPromos(void) {
@@ -104,11 +113,17 @@ void searchPromo(void) {
 
     Promo* promo = findPromoById(id, NULL);
     if (promo == NULL) {
-        printf("Promo not found.\n");
+        printf("\n  [!] Promo not found.\n");
         return;
     }
 
-    printf("Found: ID=%d | Title=%s\n", promo->id, promo->title);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    PROMO SEARCH RESULT                      |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Promo ID     | %-44d |\n", promo->id);
+    printf("  | Title        | %-44s |\n", promo->title);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void updatePromo(void) {

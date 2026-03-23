@@ -54,13 +54,21 @@ void popLastItem(void) {
 
 void peekLatestItem(void) {
     if (isStackEmpty()) {
-        printf("Bill stack is empty.\n");
+        printf("\n  [!] Bill stack is empty.\n");
         return;
     }
 
     BillItem item = bill.items[bill.top];
-    printf("Latest item: ID=%d | Name=%s | Price=%.2f | Qty=%d\n",
-           item.productId, item.productName, item.price, item.qty);
+
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    LATEST BILL ITEM                         |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Product ID   | %-44d |\n", item.productId);
+    printf("  | Product Name | %-44s |\n", item.productName);
+    printf("  | Price        | %-44.2f |\n", item.price);
+    printf("  | Quantity     | %-44d |\n", item.qty);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void displayCurrentBillStack(void) {
@@ -92,9 +100,14 @@ void currentBillTotal(void) {
     for (int i = 0; i <= bill.top; i++) {
         total += bill.items[i].price * bill.items[i].qty;
     }
-    printf("Current bill total: %.2f\n", total);
-}
 
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    CURRENT BILL SUMMARY                     |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Total Amount | %-44.2f |\n", total);
+    printf("  +--------------+----------------------------------------------+\n");
+}
 void billStackMenu(void) {
     int choice;
     do {

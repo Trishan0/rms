@@ -57,15 +57,19 @@ void searchProduct(void) {
 
     int index = searchProductIndexById(id);
     if (index == -1) {
-        printf("Product not found.\n");
+        printf("\n  [!] Product not found.\n");
         return;
     }
 
-    printf("\nFound Product\n");
-    printf("ID   : %d\n", products[index].id);
-    printf("Name : %s\n", products[index].name);
-    printf("Price: %.2f\n", products[index].price);
-    printf("Qty  : %d\n", products[index].quantity);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    PRODUCT SEARCH RESULT                    |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Product ID   | %-44d |\n", products[index].id);
+    printf("  | Name         | %-44s |\n", products[index].name);
+    printf("  | Price        | %-44.2f |\n", products[index].price);
+    printf("  | Quantity     | %-44d |\n", products[index].quantity);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void updateProduct(void) {

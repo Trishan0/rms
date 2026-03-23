@@ -48,11 +48,18 @@ void searchSupplier(void) {
 
     Supplier* s = findSupplierById(id);
     if (s == NULL) {
-        printf("Supplier not found.\n");
+        printf("\n  [!] Supplier not found.\n");
         return;
     }
 
-    printf("Found: ID=%d | Name=%s | Phone=%s\n", s->id, s->name, s->phone);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    SUPPLIER SEARCH RESULT                   |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Supplier ID  | %-44d |\n", s->id);
+    printf("  | Name         | %-44s |\n", s->name);
+    printf("  | Phone        | %-44s |\n", s->phone);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void updateSupplier(void) {

@@ -43,11 +43,17 @@ void searchSalesRecord(void) {
 
     int index = searchSalesIndexByDay(day);
     if (index == -1) {
-        printf("Sales record not found.\n");
+        printf("\n  [!] Sales record not found.\n");
         return;
     }
 
-    printf("Found: Day=%d | Amount=%.2f\n", sales[index].day, sales[index].amount);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                  SALES RECORD SEARCH RESULT                 |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Day Number   | %-44d |\n", sales[index].day);
+    printf("  | Amount       | %-44.2f |\n", sales[index].amount);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void updateSalesRecord(void) {
@@ -124,36 +130,58 @@ void bubbleSortSalesByAmount(void) {
 
 void totalDailySales(void) {
     float total = 0.0f;
-    for (int i = 0; i < salesCount; i++) total += sales[i].amount;
-    printf("Total daily sales: %.2f\n", total);
+    for (int i = 0; i < salesCount; i++) {
+        total += sales[i].amount;
+    }
+
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    SALES TOTAL SUMMARY                      |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Total Sales  | %-44.2f |\n", total);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void averageSales(void) {
     if (salesCount == 0) {
-        printf("Average sales: 0.00\n");
+        printf("\n  [!] No sales records available.\n");
         return;
     }
 
     float total = 0.0f;
-    for (int i = 0; i < salesCount; i++) total += sales[i].amount;
-    printf("Average sales: %.2f\n", total / salesCount);
+    for (int i = 0; i < salesCount; i++) {
+        total += sales[i].amount;
+    }
+
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                   AVERAGE SALES SUMMARY                     |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Average      | %-44.2f |\n", total / salesCount);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void highestSaleDay(void) {
     if (salesCount == 0) {
-        printf("No sales records available.\n");
+        printf("\n  [!] No sales records available.\n");
         return;
     }
 
     int maxIndex = 0;
     for (int i = 1; i < salesCount; i++) {
-        if (sales[i].amount > sales[maxIndex].amount) maxIndex = i;
+        if (sales[i].amount > sales[maxIndex].amount) {
+            maxIndex = i;
+        }
     }
 
-    printf("Highest sale day: Day=%d | Amount=%.2f\n",
-           sales[maxIndex].day, sales[maxIndex].amount);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                    HIGHEST SALE DAY                         |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Day Number   | %-44d |\n", sales[maxIndex].day);
+    printf("  | Amount       | %-44.2f |\n", sales[maxIndex].amount);
+    printf("  +--------------+----------------------------------------------+\n");
 }
-
 void salesReportMenu(void) {
     int choice;
     do {

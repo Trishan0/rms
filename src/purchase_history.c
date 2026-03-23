@@ -56,12 +56,19 @@ void searchPurchaseRecord(void) {
 
     Purchase* p = findPurchaseByRecordId(recordId);
     if (p == NULL) {
-        printf("Purchase record not found.\n");
+        printf("\n  [!] Purchase record not found.\n");
         return;
     }
 
-    printf("Found: RecordID=%d | CustomerID=%d | Name=%s | Amount=%.2f\n",
-           p->recordId, p->customerId, p->customerName, p->amount);
+    printf("\n");
+    printf("  +-------------------------------------------------------------+\n");
+    printf("  |                 PURCHASE RECORD SEARCH RESULT               |\n");
+    printf("  +--------------+----------------------------------------------+\n");
+    printf("  | Record ID    | %-44d |\n", p->recordId);
+    printf("  | Customer ID  | %-44d |\n", p->customerId);
+    printf("  | Name         | %-44s |\n", p->customerName);
+    printf("  | Amount       | %-44.2f |\n", p->amount);
+    printf("  +--------------+----------------------------------------------+\n");
 }
 
 void updatePurchaseRecord(void) {
