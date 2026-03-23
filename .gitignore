@@ -5,6 +5,7 @@ output/
 *.out
 
 railway_system
+supermarket
 
 # OS junk
 .DS_Store
