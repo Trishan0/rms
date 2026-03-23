@@ -32,15 +32,16 @@ typedef struct Purchase {
 } Purchase;
 
 typedef struct {
-    int customerId;
-    char customerName[NAME_LEN];
-} QueueCustomer;
+    int productId;
+    char productName[NAME_LEN];
+    int requestedQty;
+} RestockRequest;
 
 typedef struct {
-    QueueCustomer items[MAX_QUEUE];
+    RestockRequest items[MAX_QUEUE];
     int front;
     int rear;
-} CheckoutQueue;
+} RestockQueue;
 
 typedef struct {
     int productId;

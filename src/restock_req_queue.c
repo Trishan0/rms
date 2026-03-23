@@ -3,18 +3,6 @@
 #include "types.h"
 #include "restock_req_queue.h"
 
-typedef struct {
-    int productId;
-    char productName[NAME_LEN];
-    int requestedQty;
-} RestockRequest;
-
-static struct {
-    RestockRequest items[MAX_QUEUE];
-    int front;
-    int rear;
-} queueData;
-
 void initQueue(void) {
     queueData.front = 0;
     queueData.rear = 2;
