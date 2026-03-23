@@ -95,6 +95,11 @@ gcc -Wall -std=c99 main.c src/*.c -Iinclude -o supermarket
 gcc -Wall -std=c99 main.c src/*.c -Iinclude -o supermarket.exe
 ./supermarket.exe
 ```
+or 
+```powershell
+gcc -Wall -Wextra -std=c11 main.c src/product.c src/supplier.c src/purchase_history.c src/restock_req_queue.c src/bill_stack.c src/promo_cycle.c src/sales_report.c -Iinclude -o supermarket.exe
+./supermarket.exe
+```
 
 ---
 
