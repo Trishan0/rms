@@ -41,11 +41,8 @@ int main(void) {
         printf("2. Supplier Management (SLL)\n");
         printf("3. Customer Purchase History (DLL)\n");
         printf("4. Restocking Request Management (Queue)\n");
-<<<<<<< HEAD
         printf("5. Undo Last Item in Current Bill (Stack)\n");
-=======
         printf("5. Current Bill Operations (Stack)\n");
->>>>>>> master
         printf("6. Promotional Banner Rotation (CLL)\n");
         printf("7. Sales Reports (Array)\n");
         printf("8. Show demo guide\n");
