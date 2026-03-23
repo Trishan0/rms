@@ -1,6 +1,6 @@
-# 🚂 Sri Lanka Railway Network Management System
+# 🛒 Supermarket / Grocery Store Management System
 
-A CLI-based railway network management system built in **C**, implementing **7 data structures** across 7 independent modules. Developed as a semester group assignment for a Data Structures & Algorithms course at the University of Moratuwa.
+A CLI-based supermarket management system built in **C**, implementing **7 data structures** across 7 independent modules. Developed as a semester group assignment for a Data Structures & Algorithms course at the University of Moratuwa.
 
 ---
 
@@ -8,42 +8,42 @@ A CLI-based railway network management system built in **C**, implementing **7 d
 
 | Member | Module | Data Structure | Sort Algorithm |
 |--------|--------|---------------|----------------|
-| Member 1 | Train Fleet Registry | Array | Bubble Sort |
-| Member 2 | Station Directory | Singly Linked List | Insertion Sort |
-| Member 3 | Journey Log | Doubly Linked List | Selection Sort |
-| Member 4 | Train Route Rotation | Circular Linked List | — |
-| Member 5 | Seat Reservation Management | Array (2nd use) | Bubble Sort |
-| Member 6 | Passenger Boarding Queue | Queue | — |
-| Member 7 | Train Maintenance Queue | Queue (2nd use) | — |
+| Member 1 | Product Inventory | Array | Selection Sort |
+| Member 2 | Supplier Management | Singly Linked List | — |
+| Member 3 | Customer Purchase History | Doubly Linked List | — |
+| Member 4 | Restocking Request Queue | Queue | — |
+| Member 5 | Checkout Bill (Undo Scan) | Stack | — |
+| Member 6 | Promotional Banner Rotation | Circular Linked List | — |
+| Member 7 | Sales Reports | Array | Bubble Sort |
 
 ---
 
 ## 📋 System Overview
 
-This system models the full operational flow of a national railway network — from train fleet management and station directory to journey logging, seat reservations, passenger boarding and depot maintenance. Every module solves a real railway operations problem and maps to a specific data structure for a justified reason.
+This system models the full operational flow of a supermarket — from managing product inventory and supplier records to processing customer bills, tracking purchase history, handling restocking requests, rotating promotional banners on display screens, and generating daily sales reports.
 
 ```
-Train Added to Fleet
-        │
-        ▼
-[Array]          Train registered → trainID assigned
-        │
-        ├──► [Singly LL]    Station added to route directory
-        │
-        ├──► [Circular LL]  Train added to route rotation cycle
-        │         │
-        │         └──► nextTrainOnRoute() → train departs
-        │
-        ├──► [Queue]        Passengers queue up to board at platform
-        │
-        ├──► [Doubly LL]    Journey logged with distance & departure time
-        │         (navigate backward = older trips, forward = latest)
-        │
-        ├──► [Array]        Seat reserved or released on a specific train
-        │         (direct O(1) access by seat number)
-        │
-        └──► [Queue]        Train submitted for depot maintenance
-                    (processed in submission order — FIFO)
+Product added to Inventory
+        |
+        v
+[Array]          Product registered -> productID assigned
+        |
+        |-> [Singly LL]    Supplier linked to product source
+        |
+        |-> [Queue]        Low stock triggers restock request (FIFO)
+        |
+        |-> [Stack]        Customer scans items at checkout
+        |       |          Wrong scan? Pop to undo last item
+        |       v
+        |   Bill confirmed -> Purchase recorded
+        |
+        |-> [Doubly LL]    Purchase record added to history
+        |       (traverse forward = oldest, backward = latest)
+        |
+        |-> [Circular LL]  Promo banners cycle on display screen
+        |
+        v
+[Array]          Daily sales amount recorded -> Sales Report
 ```
 
 ---
@@ -51,31 +51,28 @@ Train Added to Fleet
 ## 🗂️ Project Structure
 
 ```
-railway-network-management/
-│
-├── main.c                          ← Master menu & entry point
-│
-├── include/                        ← Header files
-│   ├── shared_types.h              ← Common constants & macros
-│   ├── train_fleet.h               ← Member 1
-│   ├── station_directory.h         ← Member 2
-│   ├── journey_log.h               ← Member 3
-│   ├── route_rotation.h            ← Member 4
-│   ├── seat_reservations.h         ← Member 5
-│   ├── boarding_queue.h            ← Member 6
-│   └── maintenance_queue.h         ← Member 7
-│
-├── src/                            ← Implementation files
-│   ├── train_fleet.c               ← Member 1
-│   ├── station_directory.c         ← Member 2
-│   ├── journey_log.c               ← Member 3
-│   ├── route_rotation.c            ← Member 4
-│   ├── seat_reservations.c         ← Member 5
-│   ├── boarding_queue.c            ← Member 6
-│   └── maintenance_queue.c         ← Member 7
-│
-├── Makefile                        ← Build configuration
-└── README.md
+supermarket-system/
+|
+|-- main.c                        <- Master menu & entry point
+|
+|-- include/                      <- Header files
+|   |-- types.h                   <- All struct definitions & constants
+|   |-- product.h                 <- Member 1
+|   |-- supplier.h                <- Member 2
+|   |-- purchase_history.h        <- Member 3
+|   |-- restock_req_queue.h       <- Member 4
+|   |-- bill_stack.h              <- Member 5
+|   |-- promo_cycle.h             <- Member 6
+|   |-- sales_report.h            <- Member 7
+|
+|-- src/                          <- Implementation files
+|   |-- product.c                 <- Member 1
+|   |-- supplier.c                <- Member 2
+|   |-- purchase_history.c        <- Member 3
+|   |-- restock_req_queue.c       <- Member 4
+|   |-- bill_stack.c              <- Member 5
+|   |-- promo_cycle.c             <- Member 6
+|   |-- sales_report.c            <- Member 7
 ```
 
 ---
@@ -88,17 +85,15 @@ railway-network-management/
 
 ### Compile & Run
 
-**Using Makefile:**
 ```bash
-make          # compile only
-make run      # compile and run
-make clean    # remove compiled output
+gcc -Wall -std=c99 main.c src/*.c -Iinclude -o supermarket
+./supermarket
 ```
 
-**Using GCC directly:**
-```bash
-gcc -Wall -std=c99 -Iinclude main.c src/*.c -o railway_system
-./railway_system
+**On Windows (PowerShell):**
+```powershell
+gcc -Wall -std=c99 main.c src/*.c -Iinclude -o supermarket.exe
+./supermarket.exe
 ```
 
 ---
@@ -106,140 +101,164 @@ gcc -Wall -std=c99 -Iinclude main.c src/*.c -o railway_system
 ## 🖥️ Main Menu
 
 ```
-  ╔══════════════════════════════════════════════════════════╗
-  ║   🚂  SRI LANKA RAILWAY NETWORK MANAGEMENT SYSTEM       ║
-  ║        Colombo Fort Operations Centre                    ║
-  ╚══════════════════════════════════════════════════════════╝
-
-  ╔══════════════════════════════════════════════════════════╗
-  ║                     MAIN MENU                           ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║  1.  Train Fleet Registry       [Array]                 ║
-  ║  2.  Station Directory          [Singly Linked List]    ║
-  ║  3.  Journey Log                [Doubly Linked List]    ║
-  ║  4.  Train Route Rotation       [Circular Linked List]  ║
-  ║  5.  Ticket Cancellation Log    [Stack]                 ║
-  ║  6.  Passenger Boarding Queue   [Queue]                 ║
-  ║  7.  Train Maintenance Queue    [Queue]                 ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║  0.  Exit System                                        ║
-  ╚══════════════════════════════════════════════════════════╝
+========================================
+   SUPERMARKET / GROCERY STORE SYSTEM
+========================================
+1. Product Inventory         (Array)
+2. Supplier Management       (SLL)
+3. Customer Purchase History (DLL)
+4. Restocking Request Queue  (Queue)
+5. Undo Last Item in Bill    (Stack)
+6. Promotional Banner        (CLL)
+7. Sales Reports             (Array)
+8. Show Demo Guide
+0. Exit
 ```
 
 ---
 
 ## 📦 Module Details
 
-### 1. 🚂 Train Fleet Registry — `Array`
-Stores all trains in the Sri Lanka Railways fleet in a fixed-capacity array, modelling the real constraint of a national rail network.
+### 1. 🛍️ Product Inventory — `Array`
+Stores all products in a fixed-capacity array. The supermarket stocks a bounded catalog of products — an array models this naturally with direct access by index.
 
-**Base Operations:** `addTrain` `removeTrain` `updateTrainInfo` `searchTrain` `displayFleet` `isFleetEmpty` `isFleetFull`
+**Base Operations:** `addProduct` `searchProduct` `updateProduct` `deleteProduct` `displayProducts`
 
-**Sort:** `bubbleSortByCapacity` — sorts trains from highest to lowest seat count
+**Sort:** `selectionSortProductsByPrice` — sorts products cheapest to most expensive
 
-**Extra:** `calculateTotalSeatCapacity` — SUM of all seat counts across the entire fleet array
-
----
-
-### 2. 🏢 Station Directory — `Singly Linked List`
-Dynamically manages all railway stations. Stations are added and removed as the network expands — a linked list grows and shrinks naturally.
-
-**Base Operations:** `addStation` `removeStation` `updateStationInfo` `searchStation` `displayAllStations`
-
-**Sort:** `insertionSortByCode` — sorts stations alphabetically by station code by relinking nodes
-
-**Extra:** `countStationsOnRoute` — FILTERED COUNT of nodes matching a specific routeID
+**Extra:**
+- `totalItemsInStock()` — total quantity of all products combined
+- `totalInventoryValue()` — total monetary value of current stock (price × quantity)
 
 ---
 
-### 3. 📋 Journey Log — `Doubly Linked List`
-Logs every train journey. Controllers scroll **forward** to see latest journeys and **backward** to investigate past delays. Only a Doubly LL supports both directions natively.
+### 2. 🏭 Supplier Management — `Singly Linked List`
+Manages the list of suppliers dynamically. Suppliers are added and removed as business relationships change — a linked list grows and shrinks without wasted memory.
 
-**Base Operations:** `addJourneyRecord` `removeJourneyRecord` `updateJourneyStatus` `searchJourneyRecord` `displayAllJourneys` `traverseForward` `traverseBackward`
+**Base Operations:** `addSupplier` `searchSupplier` `updateSupplier` `deleteSupplier` `displaySuppliers`
 
-**Sort:** `selectionSortByDeparture` — sorts journeys chronologically by departure time
-
-**Extra:** `calculateJourneyDistance` — SUM of distanceKm fields across all journeys for a specific train
-
----
-
-### 4. 🔄 Train Route Rotation — `Circular Linked List`
-Cycles trains through route deployments endlessly. After the last train's trip the rotation loops back to the first — no NULL terminator, just a continuous cycle.
-
-**Base Operations:** `addTrainToRoute` `removeTrainFromRoute` `updateRouteInfo` `searchTrainInRoute` `displayRouteRotation`
-
-**Navigation:** `nextTrainOnRoute` `getCurrentTrain` — the defining operations of a Circular LL
-
-**Extra:** `getRouteSize` — manually COUNT nodes via circular traversal since there is no NULL end point
+**Extra:**
+- `countSuppliers()` — total number of active suppliers in the list
 
 ---
 
-### 5. 🎫 Ticket Cancellation Log — `Stack`
-Records every ticket cancellation in LIFO order. If a cancellation was made by mistake, pop it to reinstate the ticket. The top of the stack is always the most recent cancellation.
+### 3. 🧾 Customer Purchase History — `Doubly Linked List`
+Logs every customer purchase. Staff browse **forward** to see oldest records and **backward** to see most recent transactions. Only a Doubly LL supports both directions natively.
 
-**Base Operations:** `loadTrainSeats` `reserveSeat` `releaseSeat` `updateReservation` `searchSeat` `displaySeatMap` `isSeatMapEmpty`
+**Base Operations:** `addPurchaseRecord` `searchPurchaseRecord` `updatePurchaseRecord` `deletePurchaseRecord` `traversePurchasesForward` `traversePurchasesBackward`
 
-**Extra:** `countAvailableSeats` — CONDITIONAL COUNT scanning array for Available seats, reports occupancy % and class breakdown
-
----
-
-### 6. 🧍 Passenger Boarding Queue — `Queue`
-Manages passengers waiting to board at the platform. First passenger to join is first to board — strictly FIFO, exactly how real platform boarding works.
-
-**Base Operations:** `enqueuePassenger` `dequeuePassenger` `peekNextPassenger` `searchPassenger` `displayBoardingQueue` `cancelBoarding` `isBoardingQueueEmpty` `isBoardingQueueFull`
-
-**Extra:** `getAverageWaitTime` — AVERAGE position metric and class distribution across all queue slots
+**Extra:**
+- `totalPurchasesByCustomer()` — sum of all purchase amounts for a given customer ID
 
 ---
 
-### 7. 🔧 Train Maintenance Queue — `Queue`
-Manages trains waiting for depot servicing in submission order. Ensures no train skips its scheduled maintenance regardless of type or importance.
+### 4. 📦 Restocking Request Queue — `Queue`
+When a product runs low, a restock request is submitted. The warehouse processes requests strictly in submission order — first submitted, first fulfilled. Pure FIFO.
 
-**Base Operations:** `enqueueForMaintenance` `processNextMaintenance` `peekNextMaintenance` `searchMaintenance` `displayMaintenanceQueue` `cancelMaintenance` `isMaintenanceQueueEmpty` `isMaintenanceQueueFull`
+**Base Operations:** `enqueueRestockRequest` `dequeueRestockRequest` `frontRestockRequest` `displayRestockRequests` `searchRestockRequest`
 
-**Extra:** `countByMaintenanceType` — CONDITIONAL COUNT of entries by type: Routine / Repair / Emergency
+**Extra:**
+- `countPendingRestockRequests()` — how many restock requests are waiting
+- `totalRequestedQuantity()` — total units requested across all pending requests
 
 ---
 
-## 🔗 Module Integration
+### 5. 🧮 Checkout Bill — `Stack`
+Every item scanned at the checkout counter is pushed onto the bill stack. If the cashier scans the wrong item, they pop it off to undo the last scan. The most recently scanned item is always the one removed — pure LIFO.
 
-All modules are linked through two universal keys:
+**Base Operations:** `pushScannedItem` `popLastItem` `peekLatestItem` `displayCurrentBillStack`
+
+**Extra:**
+- `currentBillTotal()` — running total of all items currently on the bill (price × quantity for each)
+
+---
+
+### 6. 📢 Promotional Banner Rotation — `Circular Linked List`
+The store's digital display screen cycles through promotional banners endlessly. After the last promotion is shown, it loops back to the first — no end point, just a continuous cycle.
+
+**Base Operations:** `addPromo` `displayNextPromo` `searchPromo` `updatePromo` `deletePromo`
+
+**Extra:**
+- `countActivePromos()` — how many promotional banners are currently in the rotation cycle
+
+---
+
+### 7. 📊 Sales Reports — `Array`
+Records daily sales amounts in a fixed-size array. Managers review, sort and analyse sales data to spot trends and identify the best performing days.
+
+**Base Operations:** `addSalesRecord` `searchSalesRecord` `updateSalesRecord` `deleteSalesRecord` `displaySalesRecords`
+
+**Sort:** `bubbleSortSalesByAmount` — sorts sales records from lowest to highest amount
+
+**Extra:**
+- `totalDailySales()` — sum of all sales amounts recorded
+- `averageSales()` — average daily sales across all records
+- `highestSaleDay()` — which day had the highest sales amount
+
+---
+
+## 🔗 Key Linking Fields
 
 ```c
-trainID    →  assigned in Train Fleet Registry (Module 1)
-              used in Journey Log, Route Rotation, Maintenance Queue, Seat Reservations
-
-stationID  →  assigned in Station Directory (Module 2)
-              used in Journey Log, Boarding Queue
+productId   ->  links Product Inventory to Restock Queue and Bill Stack
+customerId  ->  links Purchase History records to a specific customer
+supplierId  ->  links Supplier records to supply chain operations
 ```
 
 ---
 
-## 🎯 Extra Function Summary — Why Each Is Valid
+## 🎯 Extra Functions — Why Each Is Genuinely Useful
 
-| Member | Extra Function | Type | What It Computes |
-|--------|---------------|------|-----------------|
-| 1 | `calculateTotalSeatCapacity()` | Aggregate SUM | Total seats across entire fleet array |
-| 2 | `countStationsOnRoute()` | Filtered COUNT | Stations matching a given routeID |
-| 3 | `calculateJourneyDistance()` | Aggregate SUM | Total km travelled by a specific train |
-| 4 | `getRouteSize()` | Structural COUNT | Nodes in circular cycle via manual traversal |
-| 5 | `countAvailableSeats()` | Conditional COUNT | Available seats on loaded train, by class |
-| 6 | `getAverageWaitTime()` | Aggregate AVERAGE | Queue depth metric and class distribution |
-| 7 | `countByMaintenanceType()` | Conditional COUNT | Entries per maintenance type in queue |
-
-> Every extra function is a **computation or aggregate on DS data** — not a search, not a display, not a boundary check.
+| Module | Extra Function | Real Operational Value |
+|--------|---------------|----------------------|
+| Product | `totalItemsInStock()` | Know total stock count before placing a bulk order |
+| Product | `totalInventoryValue()` | Accounting — what is the current stock worth in rupees |
+| Supplier | `countSuppliers()` | How many active supplier relationships exist |
+| Purchase | `totalPurchasesByCustomer()` | Loyalty programme — how much has a customer spent |
+| Restock | `countPendingRestockRequests()` | How backed up is the warehouse team |
+| Restock | `totalRequestedQuantity()` | How many total units need to be ordered today |
+| Bill | `currentBillTotal()` | Cashier shows running total to customer while scanning |
+| Promo | `countActivePromos()` | How many banners are in current rotation cycle |
+| Sales | `totalDailySales()` | End of week total revenue |
+| Sales | `averageSales()` | Is today above or below average performance |
+| Sales | `highestSaleDay()` | Which day was most profitable this period |
 
 ---
 
 ## 📌 DS Rule Verification
 
 ```
-Array           → used 2 times ✅  (max allowed: 3)
-Singly LL       → used 1 time  ✅  (max allowed: 3)
-Doubly LL       → used 1 time  ✅  (max allowed: 3)
-Circular LL     → used 1 time  ✅  (max allowed: 3)
-Queue           → used 2 times ✅  (max allowed: 3)
-Stack           → not used      (no genuinely honest use case in this domain)
+Array           -> used 2 times  (Products + Sales)       max allowed: 3  OK
+Singly LL       -> used 1 time   (Suppliers)               max allowed: 3  OK
+Doubly LL       -> used 1 time   (Purchase History)        max allowed: 3  OK
+Circular LL     -> used 1 time   (Promo Rotation)          max allowed: 3  OK
+Stack           -> used 1 time   (Checkout Bill)           max allowed: 3  OK
+Queue           -> used 1 time   (Restock Requests)        max allowed: 3  OK
+```
+
+---
+
+## 🎮 Demo Guide
+
+Suggested flow to demonstrate all modules quickly:
+
+```
+1 -> 5 : Display all products
+1 -> 6 : Sort products by price (Selection Sort)
+2 -> 5 : Display all suppliers
+3 -> 5 : Browse purchase history forward
+3 -> 6 : Browse purchase history backward
+3 -> 7 : Total purchases by customer 1
+4 -> 4 : Display pending restock requests
+4 -> 7 : Show total requested quantity
+5 -> 4 : Display current bill (preloaded items)
+5 -> 5 : Show current bill total
+5 -> 2 : Pop last item (undo scan)
+6 -> 2 : Show next promo (click multiple times to see rotation)
+6 -> 6 : Count active promos
+7 -> 5 : Display sales records
+7 -> 6 : Sort sales by amount (Bubble Sort)
+7 -> 9 : Show highest sale day
 ```
 
 ---
@@ -255,8 +274,7 @@ Stack           → not used      (no genuinely honest use case in this domain)
 
 ## 📌 Assignment Context
 
-- **Course:** Data Structures & Algorithms
-- **Institution:** University of Moratuwa
-- **Requirement:** 7 data structures, base operations per module, sorting algorithms, at least 1 genuine extra function per member
-- **Data Structures Used:** Array (×2), Singly LL, Doubly LL, Circular LL, Queue (×2)
-- **Sorting Algorithms:** Bubble Sort, Insertion Sort, Selection Sort
+- **Course:** Data Structures & Algorithms I
+- **University:** University of Moratuwa
+- **Data Structures Used:** Array (×2), Singly LL, Doubly LL, Circular LL, Stack, Queue
+- **Sorting Algorithms:** Selection Sort (Products), Bubble Sort (Sales)
