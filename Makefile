@@ -1,20 +1,20 @@
 # ================================================================
-# Makefile — Sri Lanka Railway Network Management System
+# Makefile — Supermarket / Grocery Store Management System
 # ================================================================
 CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c99
-TARGET  = railway_system
+TARGET  = supermarket
 SRCDIR  = src
 INCDIR  = include
 
 SRCS = main.c \
-       $(SRCDIR)/train_fleet.c \
-       $(SRCDIR)/station_directory.c \
-       $(SRCDIR)/journey_log.c \
-       $(SRCDIR)/route_rotation.c \
-       $(SRCDIR)/seat_reservations.c \
-       $(SRCDIR)/boarding_queue.c \
-       $(SRCDIR)/maintenance_queue.c 
+       $(SRCDIR)/product.c \
+       $(SRCDIR)/supplier.c \
+       $(SRCDIR)/purchase_history.c \
+       $(SRCDIR)/restock_req_queue.c \
+       $(SRCDIR)/bill_stack.c \
+       $(SRCDIR)/promo_cycle.c \
+       $(SRCDIR)/sales_report.c
 
 
 all:
