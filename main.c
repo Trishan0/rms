@@ -1,106 +1,65 @@
-/* ================================================================
-   main.c -- Master Entry Point
-   Sri Lanka Railway Network Management System
-   ================================================================
-   MODULE MAP:
-     1. Train Fleet Registry      [Array]          Member 1
-     2. Station Directory         [Singly LL]      Member 2
-     3. Journey Log               [Doubly LL]      Member 3
-     4. Train Route Rotation      [Circular LL]    Member 4
-     5. Seat Reservations         [Array x2]       Member 5
-     6. Passenger Boarding Queue  [Queue]          Member 6
-     7. Train Maintenance Queue   [Queue x2]       Member 7
-
-   Universal Keys:
-     trainID   -> Fleet -> Journey Log, Route Rotation,
-                           Maintenance, Seat Reservations
-     stationID -> Station Directory -> Journey Log, Boarding Queue
-
-   DS Usage:
-     Array       -> 2 times (Train Fleet + Seat Reservations)
-     Singly LL   -> 1 time  (Station Directory)
-     Doubly LL   -> 1 time  (Journey Log)
-     Circular LL -> 1 time  (Route Rotation)
-     Queue       -> 2 times (Boarding + Maintenance)
-   ================================================================ */
-
 #include <stdio.h>
-#include <stdlib.h>
-#include "include/shared_types.h"
-#include "include/train_fleet.h"
-#include "include/station_directory.h"
-#include "include/journey_log.h"
-#include "include/route_rotation.h"
-#include "include/seat_reservations.h"
-#include "include/boarding_queue.h"
-#include "include/maintenance_queue.h"
+#include "product.h"
+#include "supplier.h"
+#include "purchase_history.h"
+#include "restock_req_queue.h"
+#include "bill_stack.h"
+#include "promo_cycle.h"
+#include "sales_report.h"
 
-/* ---------- Banner ---------- */
-void printBanner() {
-    printf("\n");
-    printf("  +----------------------------------------------------------+\n");
-    printf("  |  ** SRI LANKA RAILWAY NETWORK MANAGEMENT SYSTEM **       |\n");
-    printf("  |       Colombo Fort Operations Centre                      |\n");
-    printf("  +----------------------------------------------------------+\n");
+static void showDemoGuide(void) {
+    printf("\n================ DEMO GUIDE ================\n");
+    printf("Preloaded sample data is already available.\n");
+    printf("Suggested demo flow:\n");
+    printf("1 -> 5 : Display products\n");
+    printf("1 -> 6 : Sort products by price\n");
+    printf("2 -> 5 : Display suppliers\n");
+    printf("3 -> 5 : Traverse purchase history forward\n");
+    printf("4 -> 4 : Display restock request queue\n");
+    printf("4 -> 7 : Show total requested quantity\n");
+    printf("5 -> 4 : Display current bill stack\n");
+    printf("5 -> 5 : Show current bill total\n");
+    printf("6 -> 2 : Display next promo repeatedly\n");
+    printf("7 -> 5 : Display sales records\n");
+    printf("7 -> 9 : Highest sale day\n");
+    printf("===========================================\n");
 }
 
-/* ---------- Main menu ---------- */
-void printMainMenu() {
-    printf("\n");
-    printf("  +----------------------------------------------------------+\n");
-    printf("  |                      MAIN MENU                           |\n");
-    printf("  +----------------------------------------------------------+\n");
-    printf("  |  1.  Train Fleet Registry       [Array]                  |\n");
-    printf("  |  2.  Station Directory          [Singly Linked List]     |\n");
-    printf("  |  3.  Journey Log                [Doubly Linked List]     |\n");
-    printf("  |  4.  Train Route Rotation       [Circular Linked List]   |\n");
-    printf("  |  5.  Seat Reservations          [Array]                  |\n");
-    printf("  |  6.  Passenger Boarding Queue   [Queue]                  |\n");
-    printf("  |  7.  Train Maintenance Queue    [Queue]                  |\n");
-    printf("  +----------------------------------------------------------+\n");
-    printf("  |  0.  Exit System                                         |\n");
-    printf("  +----------------------------------------------------------+\n");
-    printf("  Choice: ");
-}
-
-/* ---------- Quick reference ---------- */
-void printReference() {
-    printf("\n");
-    printf("  +------------------------------------------------------------+\n");
-    printf("  |          FAMOUS SL RAILWAY TRAINS  (Reference)             |\n");
-    printf("  +--------------------------+---------------------------------+\n");
-    printf("  | Udarata Menike           | Colombo -> Badulla              |\n");
-    printf("  | Ruhunu Kumari            | Colombo -> Matara               |\n");
-    printf("  | Yal Devi                 | Colombo -> Jaffna               |\n");
-    printf("  | Intercity Express        | Colombo -> Kandy                |\n");
-    printf("  | Rajarata Rajini          | Colombo -> Vauniya              |\n");
-    printf("  +------------------------------------------------------------+\n");
-}
-
-/* ================================================================
-   MAIN
-   ================================================================ */
-int main() {
-    printBanner();
-    printReference();
-
+int main(void) {
     int choice;
+
+    initProducts();
+    initQueue();
+    initBillStack();
+    initSales();
+
     do {
-        printMainMenu();
+        printf("\n========================================\n");
+        printf("   SUPERMARKET / GROCERY STORE SYSTEM\n");
+        printf("========================================\n");
+        printf("1. Product Inventory (Array)\n");
+        printf("2. Supplier Management (SLL)\n");
+        printf("3. Customer Purchase History (DLL)\n");
+        printf("4. Restocking Request Management (Queue)\n");
+        printf("5. Undo Last Item in Current Bill (Stack)\n");
+        printf("6. Promotional Banner Rotation (CLL)\n");
+        printf("7. Sales Reports (Array)\n");
+        printf("8. Show demo guide\n");
+        printf("0. Exit\n");
+        printf("Enter choice: ");
         scanf("%d", &choice);
+
         switch (choice) {
-            case 1: trainFleetMenu();          break;
-            case 2: stationDirectoryMenu();    break;
-            case 3: journeyLogMenu();          break;
-            case 4: routeRotationMenu();       break;
-            case 5: seatReservationsMenu();    break;
-            case 6: boardingQueueMenu();       break;
-            case 7: maintenanceQueueMenu();    break;
-            case 0:
-                printf("\n  [+] Exiting Sri Lanka Railway System. Goodbye.\n\n");
-                break;
-            default:
-                printf("  [!] Invalid choice. Select 0-7.\n");
+            case 1: productMenu(); break;
+            case 2: supplierMenu(); break;
+            case 3: purchaseHistoryMenu(); break;
+            case 4: restockQueueMenu(); break;
+            case 5: billStackMenu(); break;
+            case 6: promoCycleMenu(); break;
+            case 7: salesReportMenu(); break;
+            case 8: showDemoGuide(); break;
+            case 0: printf("Exiting system.\n"); break;
+            default: printf("Invalid choice.\n");
         }
     } while (choice != 0);
 
