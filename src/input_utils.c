@@ -6,6 +6,10 @@
 #include "input_utils.h"
 
 static int readLineRaw(char* outBuffer, size_t outSize) {
+    if (outSize < 2 || outSize > (size_t)INT_MAX) {
+        return 0;
+    }
+
     if (fgets(outBuffer, (int)outSize, stdin) == NULL) {
         return 0;
     }
@@ -68,7 +72,7 @@ int readInt(const char* prompt, int* outValue) {
         printf("Invalid input. Enter a valid integer.\n");
         return 0;
     }
-    if (parsed < INT_MIN || parsed > INT_MAX) {
+    if (parsed < (long)INT_MIN || parsed > (long)INT_MAX) {
         printf("Invalid input. Integer is out of range.\n");
         return 0;
     }
